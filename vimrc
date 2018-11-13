@@ -17,7 +17,7 @@ set noswapfile
 set clipboard=unnamed
 set statusline=%F%m\ %y\ b%n%=line:%4l:%v\ of\ %L\ [%P]
 set autochdir
-set formatoptions=cq 
+set formatoptions=cq
 set fo-=t
 set completeopt+=longest
 set backspace=2
@@ -125,10 +125,10 @@ endif
 "}}}
 " vimrc settings {{{
 " open and source the vimrc file
-nnoremap <leader>ev :vsplit $MYVIMRC<cr> 
+nnoremap <leader>ev :vsplit $MYVIMRC<cr>
 nnoremap <leader>sv :source $MYVIMRC<cr>
 if findfile("zathurarc",expand($HOME) . "/.config/zathura")
-    nnoremap <leader>ez :vsplit $HOME/.config/zathura/zathurarc<cr> 
+    nnoremap <leader>ez :vsplit $HOME/.config/zathura/zathurarc<cr>
 endif
 " ^^^ is not working
 " }}}
@@ -169,14 +169,14 @@ nnoremap <leader>n :NERDTreeToggle<cr>
 nnoremap <leader>b :NERDTree .<cr>
 
 nnoremap <leader>m :TagbarToggle<cr>
-" tmux uses C-a as prefix C-a is normally number increment 
+" tmux uses C-a as prefix C-a is normally number increment
 nnoremap <C-c> <C-a>
 
 nnoremap <F4> :execute "vimgrep /" . expand("<cword>") . "/j **" <Bar> cw<CR>
 nnoremap <leader>c :execute "normal I" . b:mycomment . " "<cr>
-nnoremap <leader>d :<C-u>call setline(".", substitute(getline("."),'\V\^\(\s\{-}\)\(' . b:mycomment .  '\s\*\)\(\.\*\)','\1\3',""))<cr> 
+nnoremap <leader>d :<C-u>call setline(".", substitute(getline("."),'\V\^\(\s\{-}\)\(' . b:mycomment .  '\s\*\)\(\.\*\)','\1\3',""))<cr>
 
-vnoremap <leader>c :call setline(".", substitute(getline("."),'^\(\s*\)','\1' . b:mycomment . ' ',""))<cr> 
+vnoremap <leader>c :call setline(".", substitute(getline("."),'^\(\s*\)','\1' . b:mycomment . ' ',""))<cr>
 vnoremap <leader>d :call setline(".", substitute(getline("."),'\V\^\(\s\{-}\)\(' . b:mycomment .  '\s\*\)\(\.\*\)','\1\3',""))<cr>gv
 "vnoremap <leader>c :<c-u>execute "'<,'>" . 's@^\(\s*\)@\1' . b:mycomment<cr>
 "vnoremap <leader>x :<c-u>execute "'<,'>" . 's@\v^(\s{-})(' . b:mycomment .  ')+(.*)@\1\3'<cr>
@@ -196,7 +196,7 @@ nnoremap <leader>trc :call VimuxRunCommand(b:leadertrc) <cr>
 nnoremap <localleader>n :cn<CR>
 nnoremap <localleader>p :cp<CR>
 
-" }}}                
+" }}}
 " C/C++ file settings {{{
 augroup FT_cpp
     au!
@@ -252,7 +252,7 @@ augroup FT_go
     autocmd FileType go nnoremap <buffer> <leader>la :GoCallers<cr>
     autocmd FileType go nnoremap <buffer> <leader>lv :GoVet<cr>
     autocmd FileType go nnoremap <buffer> <leader>ls :GoDecls<cr>
-    autocmd FileType go nnoremap <buffer> <leader>e :!./%< 
+    autocmd FileType go nnoremap <buffer> <leader>e :!./%<
     autocmd FileType go nnoremap <buffer> K :GoDoc<cr>
     autocmd FileType go nnoremap <buffer> <leader>f :GoFmt<cr>
     autocmd Filetype go setlocal noexpandtab
@@ -357,7 +357,7 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
 " let Vundle manage Vundle
-" required! 
+" required!
 Bundle 'VundleVim/Vundle.vim'
 " Bundle 'Blackrush/vim-gocode'
 
@@ -367,11 +367,10 @@ Plugin 'racer-rust/vim-racer'
 Plugin 'majutsushi/tagbar'
 Plugin 'vim-syntastic/syntastic'
 Plugin 'nsf/gocode', {'rtp': 'vim/'}
-Plugin 'https://github.com/fatih/vim-go'
+Plugin 'fatih/vim-go'
 Plugin 'benmills/vimux'
 Plugin 'tmux-plugins/vim-tmux'
-Plugin 'https://github.com/scrooloose/nerdtree'
-Plugin 'pangloss/vim-javascript'
+Plugin 'scrooloose/nerdtree'
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
 Plugin 'tpope/vim-fugitive'
@@ -379,8 +378,6 @@ Plugin 'airblade/vim-gitgutter'
 Plugin 'junegunn/fzf.vim'
 Plugin 'junegunn/fzf'
 Plugin 'Valloric/YouCompleteMe'
-Plugin 'rdnetto/YCM-Generator'
-Plugin 'tell-k/vim-autopep8'
 Plugin 'KabbAmine/zeavim.vim'
 
 call vundle#end()
@@ -452,7 +449,7 @@ let g:UltiSnipsExpandTrigger='<c-j>'
 
 " functions {{{
 function! MYgorun()
-    
+
 endfunction
 
 function! MYfindmains()
@@ -475,7 +472,7 @@ function! MYgetbuffers()
     let last = bufnr("$")
     let first = 1
     for i in range(first,last)
-        if buflisted(i) != 0 
+        if buflisted(i) != 0
             :call add(buf,i)
         endif
     endfor
