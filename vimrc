@@ -232,7 +232,9 @@ augroup END
 augroup FT_rust
     au!
     autocmd FileType rust let b:mycomment = "//"
-    autocmd FileType rust nnoremap <buffer> <leader>r :make run<cr>
+    autocmd FileType rust nnoremap <buffer> <leader>rr :Cargo run<cr>
+    autocmd FileType rust nnoremap <buffer> <leader>rt :Cargo test<cr>
+    autocmd FileType rust nnoremap <buffer> <leader>rc :Cargo check<cr>
 augroup END
 "}}}
 " go file settings {{{
@@ -364,6 +366,7 @@ Bundle 'VundleVim/Vundle.vim'
 " The bundles you install will be listed here
 Plugin 'rust-lang/rust.vim'
 Plugin 'racer-rust/vim-racer'
+Plugin 'timonv/vim-cargo'
 Plugin 'majutsushi/tagbar'
 Plugin 'vim-syntastic/syntastic'
 Plugin 'nsf/gocode', {'rtp': 'vim/'}
