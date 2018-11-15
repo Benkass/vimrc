@@ -196,6 +196,8 @@ nnoremap <leader>trc :call VimuxRunCommand(b:leadertrc) <cr>
 nnoremap <localleader>n :cn<CR>
 nnoremap <localleader>p :cp<CR>
 
+nnoremap gd :YcmCompleter GoTo<CR>
+
 " }}}
 " C/C++ file settings {{{
 augroup FT_cpp
@@ -233,6 +235,7 @@ augroup FT_rust
     au!
     autocmd FileType rust let b:mycomment = "//"
     autocmd FileType rust nnoremap <buffer> <leader>rr :Cargo run<cr>
+    autocmd FileType rust nnoremap <buffer> <leader>rb :Cargo build<cr>
     autocmd FileType rust nnoremap <buffer> <leader>rt :Cargo test<cr>
     autocmd FileType rust nnoremap <buffer> <leader>rc :Cargo check<cr>
 augroup END
