@@ -172,6 +172,7 @@ nnoremap <leader>m :TagbarToggle<cr>
 " tmux uses C-a as prefix C-a is normally number increment
 nnoremap <C-c> <C-a>
 
+nnoremap gd :YcmCompleter GoTo<cr>
 nnoremap <F4> :execute "vimgrep /" . expand("<cword>") . "/j **" <Bar> cw<CR>
 nnoremap <leader>c :execute "normal I" . b:mycomment . " "<cr>
 nnoremap <leader>d :<C-u>call setline(".", substitute(getline("."),'\V\^\(\s\{-}\)\(' . b:mycomment .  '\s\*\)\(\.\*\)','\1\3',""))<cr>
@@ -188,6 +189,7 @@ nnoremap <leader>; <c-v>$A;<esc>
 nnoremap <leader>tcd :call VimuxRunCommand("cd " . expand("%:p:h"))<cr>
 nnoremap <leader>tcc :call VimuxSendKeys('C-c')<cr>
 
+nnoremap <leader>tp :call Runprevious()<cr>
 let b:leadertrc=""
 nnoremap <leader>tl :call VimuxRunCommand(substitute(getline(b:leadertl_line), '^\s*' . b:mycomment . '\s*\(.*\)$', '\1', "")) <cr>
 nnoremap <leader>l :execute "normal :!" . substitute(getline(b:leadertl_line), '^\s*' . b:mycomment . '\s*\zs\(.*\)\ze$', '\1', "")
@@ -232,7 +234,9 @@ augroup END
 augroup FT_rust
     au!
     autocmd FileType rust let b:mycomment = "//"
+    autocmd FileType rust let g:rustfmt_autosave = 1
     autocmd FileType rust nnoremap <buffer> <leader>rr :Cargo run<cr>
+    autocmd FileType rust nnoremap <buffer> <leader>ro :Cargo run --release<cr>
     autocmd FileType rust nnoremap <buffer> <leader>rt :Cargo test<cr>
     autocmd FileType rust nnoremap <buffer> <leader>rc :Cargo check<cr>
 augroup END
@@ -450,7 +454,15 @@ let g:UltiSnipsExpandTrigger='<c-j>'
 
 " }}}
 
+
 " functions {{{
+function! Runprevious()
+    call VimuxOpenRunner()
+    call VimuxSendKeys('C-p')
+    call VimuxSendKeys('Enter')
+endfunction
+
+
 function! MYgorun()
 
 endfunction
