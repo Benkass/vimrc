@@ -198,6 +198,8 @@ nnoremap <leader>trc :call VimuxRunCommand(b:leadertrc) <cr>
 nnoremap <localleader>n :cn<CR>
 nnoremap <localleader>p :cp<CR>
 
+nnoremap gd :YcmCompleter GoTo<CR>
+
 " }}}
 " C/C++ file settings {{{
 augroup FT_cpp
@@ -237,6 +239,7 @@ augroup FT_rust
     autocmd FileType rust let g:rustfmt_autosave = 1
     autocmd FileType rust nnoremap <buffer> <leader>rr :Cargo run<cr>
     autocmd FileType rust nnoremap <buffer> <leader>ro :Cargo run --release<cr>
+    autocmd FileType rust nnoremap <buffer> <leader>rb :Cargo build<cr>
     autocmd FileType rust nnoremap <buffer> <leader>rt :Cargo test<cr>
     autocmd FileType rust nnoremap <buffer> <leader>rc :Cargo check<cr>
 augroup END
@@ -495,4 +498,3 @@ function! MYgetbuffers()
 endfunction
 
 "}}}
-
