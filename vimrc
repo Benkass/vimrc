@@ -197,6 +197,7 @@ nnoremap <leader>trc :call VimuxRunCommand(b:leadertrc) <cr>
 
 nnoremap <localleader>n :cn<CR>
 nnoremap <localleader>p :cp<CR>
+nnoremap <localleader>ts :SyntasticToggleMode<CR>
 
 nnoremap gd :YcmCompleter GoTo<CR>
 
