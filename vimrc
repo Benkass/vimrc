@@ -86,6 +86,7 @@ endif
     hi ColorColumn ctermbg=235  guibg=#121212
     hi Error       ctermbg=1    guibg=#FF0000
     hi search      ctermbg=8    guibg=#808080
+    hi ExtraWhitespace ctermbg=52
 
     hi SpellBad    ctermbg=124
     hi SpellCap    ctermbg=20
@@ -102,6 +103,8 @@ endif
     " syntastic
 
     hi Pmenu ctermbg=238 ctermfg=255
+
+    match ExtraWhitespace /\s\+$/
 " }}}
 " leaders {{{
 let mapleader=","
