@@ -378,6 +378,7 @@ Plugin 'prabirshrestha/vim-lsp'
 Plugin 'prabirshrestha/async.vim'
 Plugin 'prabirshrestha/asyncomplete.vim'
 Plugin 'prabirshrestha/asyncomplete-lsp.vim'
+Plugin 'prabirshrestha/asyncomplete-ultisnips.vim'
 Plugin 'timonv/vim-cargo'
 Plugin 'majutsushi/tagbar'
 Plugin 'vim-syntastic/syntastic'
@@ -476,6 +477,15 @@ if executable('pyls')
         \ 'cmd': {server_info->['pyls']},
         \ 'whitelist': ['python'],
         \ })
+endif
+" Ultisnips
+if has('python3')
+    let g:UltiSnipsExpandTrigger="<c-e>"
+    call asyncomplete#register_source(asyncomplete#sources#ultisnips#get_source_options({
+        \ 'name': 'ultisnips',
+        \ 'whitelist': ['*'],
+        \ 'completor': function('asyncomplete#sources#ultisnips#completor'),
+        \ }))
 endif
 " }}}
 " UltiSnip {{{
