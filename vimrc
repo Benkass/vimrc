@@ -172,7 +172,8 @@ nnoremap <leader>m :TagbarToggle<cr>
 " tmux uses C-a as prefix C-a is normally number increment
 nnoremap <C-c> <C-a>
 
-nnoremap gd :YcmCompleter GoTo<cr>
+nnoremap gd :LspDefinition<cr>
+nnoremap ge :LspDeclaration<cr>
 nnoremap <F4> :execute "vimgrep /" . expand("<cword>") . "/j **" <Bar> cw<CR>
 nnoremap <leader>c :execute "normal I" . b:mycomment . " "<cr>
 nnoremap <leader>d :<C-u>call setline(".", substitute(getline("."),'\V\^\(\s\{-}\)\(' . b:mycomment .  '\s\*\)\(\.\*\)','\1\3',""))<cr>
@@ -199,8 +200,6 @@ nnoremap <localleader>n :cn<CR>
 nnoremap <localleader>p :cp<CR>
 nnoremap <localleader>ts :SyntasticToggleMode<CR>
 
-nnoremap gd :YcmCompleter GoTo<CR>
-
 " }}}
 " C/C++ file settings {{{
 augroup FT_cpp
@@ -222,8 +221,6 @@ augroup FT_python
     au!
     autocmd FileType python let b:mycomment = "#"
     autocmd FileType python set fo-=t
-    autocmd FIleType python nnoremap <buffer> gd :YcmCompleter GoToDefinition<cr>
-    autocmd FIleType python nnoremap <buffer> gD :YcmCompleter GoToDeclaration<cr>
     autocmd FileType python nnoremap <buffer> <leader>tr3 :call VimuxRunCommand("python3 " . expand("%:p"))<cr>
     autocmd FileType python nnoremap <buffer> <leader>tr2 :call VimuxRunCommand("python  " . expand("%:p"))<cr>
     autocmd FileType python nnoremap <buffer> <leader>r3 :!python3 %<cr>
@@ -374,6 +371,10 @@ Bundle 'VundleVim/Vundle.vim'
 " The bundles you install will be listed here
 Plugin 'rust-lang/rust.vim'
 Plugin 'racer-rust/vim-racer'
+Plugin 'prabirshrestha/vim-lsp'
+Plugin 'prabirshrestha/async.vim'
+Plugin 'prabirshrestha/asyncomplete.vim'
+Plugin 'prabirshrestha/asyncomplete-lsp.vim'
 Plugin 'timonv/vim-cargo'
 Plugin 'majutsushi/tagbar'
 Plugin 'vim-syntastic/syntastic'
@@ -388,8 +389,9 @@ Plugin 'tpope/vim-fugitive'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'junegunn/fzf.vim'
 Plugin 'junegunn/fzf'
-Plugin 'Valloric/YouCompleteMe'
+" Plugin 'Valloric/YouCompleteMe'
 Plugin 'KabbAmine/zeavim.vim'
+Plugin 'ElmCast/elm-vim'
 
 call vundle#end()
 filetype plugin indent on
@@ -450,14 +452,39 @@ let g:pymode_breakpoint_bind = '<leader>b'
 let g:go_fmt_autosave = 0
 
 " }}}
+" asyncomplete {{{
+inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <cr>    pumvisible() ? "\<C-y>" : "\<cr>"
+
+" Rust
+if executable('rls')
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'rls',
+        \ 'cmd': {server_info->['rustup', 'run', 'stable', 'rls']},
+        \ 'whitelist': ['rust'],
+        \ })
+endif
+" Python
+if executable('pyls')
+    " pip install python-language-server
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'pyls',
+        \ 'cmd': {server_info->['pyls']},
+        \ 'whitelist': ['python'],
+        \ })
+endif
+" }}}
 " UltiSnip {{{
 let g:UltiSnipsJumpForwardTrigger='<c-l>'
 let g:UltiSnipsJumpBackwardTrigger='<c-h>'
 let g:UltiSnipsExpandTrigger='<c-j>'
 " }}}
-
+" Elm {{{
+let g:elm_setup_keybindings = 0
 " }}}
 
+" }}}
 
 " functions {{{
 function! Runprevious()
