@@ -177,6 +177,9 @@ nnoremap <C-c> <C-a>
 
 nnoremap gd :LspDefinition<cr>
 nnoremap ge :LspDeclaration<cr>
+nnoremap gh :LspHover<cr>
+nnoremap gr :LspRename<cr>
+
 nnoremap <F4> :execute "vimgrep /" . expand("<cword>") . "/j **" <Bar> cw<CR>
 nnoremap <leader>c :execute "normal I" . b:mycomment . " "<cr>
 nnoremap <leader>d :<C-u>call setline(".", substitute(getline("."),'\V\^\(\s\{-}\)\(' . b:mycomment .  '\s\*\)\(\.\*\)','\1\3',""))<cr>
