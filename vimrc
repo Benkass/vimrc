@@ -20,6 +20,8 @@ set autochdir
 set formatoptions=cq
 set fo-=t
 set completeopt+=longest
+set completeopt+=preview
+set completeopt+=menuone
 set backspace=2
 set updatetime=100
 " the default formatoption can be changed in filetype plugins, these can be
@@ -39,10 +41,6 @@ if has("gui_running")
     set mouse=""
 endif
 " }}}
-" }}}
-" imports {{{
-
-source $VIMRUNTIME/macros/matchit.vim
 " }}}
 " color settings {{{
 " example of how these can be is in $VIMRUNTIME/syntax/syncolor.vim
@@ -112,28 +110,11 @@ let maplocalleader=";"
 " }}}
 " variables {{{
 let $SYNTAX="$VIMRUNTIME/syntax"
-
-if !exists("g:startdir")
-    let g:startdir = expand("%:p:h")
-endif
-
-" dont overwrite the variable if resource vimrc
-if !exists("b:mycomment")
-    let b:mycomment = ""
-endif
-
-if !exists("b:leadertl_line")
-    let b:leadertl_line = 3
-endif
 "}}}
 " vimrc settings {{{
 " open and source the vimrc file
 nnoremap <leader>ev :vsplit $MYVIMRC<cr>
 nnoremap <leader>sv :source $MYVIMRC<cr>
-if findfile("zathurarc",expand($HOME) . "/.config/zathura")
-    nnoremap <leader>ez :vsplit $HOME/.config/zathura/zathurarc<cr>
-endif
-" ^^^ is not working
 " }}}
 " maps {{{
 
@@ -142,6 +123,7 @@ nnoremap k gk
 " removes the arrowkeys in insert mode
 inoremap <C-c> <nop>
 inoremap jk <esc>
+inoremap <C-l> <nop>
 
 nnoremap <leader>f gg=G
 nnoremap L :bn<cr>
@@ -184,11 +166,6 @@ nnoremap <F4> :execute "vimgrep /" . expand("<cword>") . "/j **" <Bar> cw<CR>
 nnoremap <leader>c :execute "normal I" . b:mycomment . " "<cr>
 nnoremap <leader>d :<C-u>call setline(".", substitute(getline("."),'\V\^\(\s\{-}\)\(' . b:mycomment .  '\s\*\)\(\.\*\)','\1\3',""))<cr>
 
-vnoremap <leader>c :call setline(".", substitute(getline("."),'^\(\s*\)','\1' . b:mycomment . ' ',""))<cr>
-vnoremap <leader>d :call setline(".", substitute(getline("."),'\V\^\(\s\{-}\)\(' . b:mycomment .  '\s\*\)\(\.\*\)','\1\3',""))<cr>gv
-"vnoremap <leader>c :<c-u>execute "'<,'>" . 's@^\(\s*\)@\1' . b:mycomment<cr>
-"vnoremap <leader>x :<c-u>execute "'<,'>" . 's@\v^(\s{-})(' . b:mycomment .  ')+(.*)@\1\3'<cr>
-
 nnoremap <silent> <leader>q :bp\|bd #<cr>
 vnoremap <leader>; <c-v>$A;<esc>
 nnoremap <leader>; <c-v>$A;<esc>
@@ -197,30 +174,11 @@ nnoremap <leader>tcd :call VimuxRunCommand("cd " . expand("%:p:h"))<cr>
 nnoremap <leader>tcc :call VimuxSendKeys('C-c')<cr>
 
 nnoremap <leader>tp :call Runprevious()<cr>
-let b:leadertrc=""
-nnoremap <leader>tl :call VimuxRunCommand(substitute(getline(b:leadertl_line), '^\s*' . b:mycomment . '\s*\(.*\)$', '\1', "")) <cr>
-nnoremap <leader>l :execute "normal :!" . substitute(getline(b:leadertl_line), '^\s*' . b:mycomment . '\s*\zs\(.*\)\ze$', '\1', "")
-nnoremap <leader>trc :call VimuxRunCommand(b:leadertrc) <cr>
 
 nnoremap <localleader>n :cn<CR>
 nnoremap <localleader>p :cp<CR>
 nnoremap <localleader>ts :SyntasticToggleMode<CR>
 
-" }}}
-" C/C++ file settings {{{
-augroup FT_cpp
-    au!
-    autocmd FileType cpp let b:mycomment = "//"
-    autocmd FileType c let b:mycomment = "//"
-
-    autocmd FileType cpp nnoremap <buffer> <leader>e :make %<<cr>
-    autocmd FileType c nnoremap <buffer> <leader>e :make %<<cr>
-    autocmd FileType cpp nnoremap <buffer> <leader>r :!./%<<cr>
-    autocmd FileType c nnoremap <buffer> <leader>r :!./%<<cr>
-    autocmd FileType c nnoremap <buffer> <leader>a :make all<cr>
-    autocmd FileType c nnoremap <buffer> <leader>s :!./<tab><cr>
-    " add maps for make and run programs in c/c++
-augroup END
 " }}}
 " python file settings {{{
 augroup FT_python
@@ -272,73 +230,17 @@ augroup FT_go
     autocmd FileType godoc nnoremap <buffer> K :GoDoc<cr>
 augroup END
 "}}}
-" sh file settings {{{
-augroup FT_sh
-    au!
-    autocmd FileType sh let b:mycomment = "#"
-    autocmd Filetype sh nnoremap <buffer> <leader>r :!sh %<cr>
-augroup END
-" }}}
-" R file settings {{{
-augroup FT_R
-    au!
-    autocmd FileType r let b:mycomment = "#"
-    autocmd FileType r nnoremap <buffer> <leader>r :!Rscript %<cr>
-    autocmd FileType r nnoremap <buffer> <leader>in :!R<cr>
-    autocmd FileType r nnoremap <buffer> <leader>sp :!xdg-open Rplots.pdf<cr>
-augroup END
-" }}}
 " Vimscript file settings {{{
 augroup FT_vim
     au!
-    autocmd FileType vim let b:mycomment = "\""
     autocmd FileType vim setlocal foldmethod=marker
-augroup END
-" }}}
-" Perl file settings {{{
-augroup FT_perl
-    au!
-    autocmd FileType perl let b:mycomment = "#"
-    autocmd FileType perl nnoremap <buffer> <leader>r :!perl %<cr>
-augroup END
-" }}}
-" asm file settings {{{
-augroup FT_asm
-    au!
-    autocmd Bufread *.asm set filetype=nasm
 augroup END
 " }}}
 " Makefile settings {{{
 augroup FT_make
     au!
-    autocmd FileType make let b:mycomment = "#"
     autocmd Filetype make setlocal noexpandtab
 augroup END
-"}}}
-" Octave (Matlab) settings {{{
-augroup FT_matlab
-    au!
-    autocmd Filetype octave let b:mycomment = "%"
-    autocmd FileType octave nnoremap <buffer> <leader>f <nop>
-    autocmd FileType octave nnoremap <buffer> <leader>tr :VimuxRunCommand("cd('" . expand("%:p:h") . "');" .   "source('" . expand("%:p") . "')")<cr>
-    autocmd BufEnter *.m    compiler mlint
-augroup END
-" }}}
-" LaTeX settings {{{
-augroup FT_LaTeX
-    au!
-    autocmd FileType plaintex set ft = "tex"
-    autocmd FileType tex let b:mycomment = "%"
-    autocmd Filetype tex setlocal textwidth=79
-    autocmd Filetype tex setlocal noautoindent
-    autocmd Filetype tex setlocal spell spelllang=en
-    autocmd Filetype tex nnoremap <buffer> <leader>f <nop>
-    autocmd Filetype tex vnoremap <buffer> <leader>f gq
-    autocmd Filetype tex nnoremap <buffer> <leader>r :!pdflatex %<cr>
-    autocmd Filetype tex nnoremap <buffer> <leader>s :execute '!gnome-open ' . expand('%<') . '.pdf'<cr>
-    autocmd Filetype tex nnoremap <buffer> <leader>l :!texcount -inc %<cr>
-augroup END
-let g:Tex_FoldedSections = ""
 "}}}
 " json file settings {{{
 augroup FT_json
@@ -376,15 +278,13 @@ Bundle 'VundleVim/Vundle.vim'
 
 " The bundles you install will be listed here
 Plugin 'rust-lang/rust.vim'
-Plugin 'racer-rust/vim-racer'
 Plugin 'prabirshrestha/vim-lsp'
 Plugin 'prabirshrestha/async.vim'
 Plugin 'prabirshrestha/asyncomplete.vim'
+Plugin 'prabirshrestha/asyncomplete-file.vim'
 Plugin 'prabirshrestha/asyncomplete-lsp.vim'
 Plugin 'prabirshrestha/asyncomplete-ultisnips.vim'
-Plugin 'timonv/vim-cargo'
 Plugin 'majutsushi/tagbar'
-Plugin 'vim-syntastic/syntastic'
 Plugin 'nsf/gocode', {'rtp': 'vim/'}
 Plugin 'fatih/vim-go'
 Plugin 'benmills/vimux'
@@ -396,9 +296,9 @@ Plugin 'tpope/vim-fugitive'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'junegunn/fzf.vim'
 Plugin 'junegunn/fzf'
-" Plugin 'Valloric/YouCompleteMe'
-Plugin 'KabbAmine/zeavim.vim'
 Plugin 'ElmCast/elm-vim'
+Plugin 'tpope/vim-commentary'
+Plugin 'w0rp/ale'
 
 call vundle#end()
 filetype plugin indent on
@@ -483,18 +383,26 @@ if executable('pyls')
 endif
 " Ultisnips
 if has('python3')
-    let g:UltiSnipsExpandTrigger="<c-e>"
     call asyncomplete#register_source(asyncomplete#sources#ultisnips#get_source_options({
         \ 'name': 'ultisnips',
         \ 'whitelist': ['*'],
         \ 'completor': function('asyncomplete#sources#ultisnips#completor'),
         \ }))
 endif
+au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#file#get_source_options({
+    \ 'name': 'file',
+    \ 'whitelist': ['*'],
+    \ 'priority': 10,
+    \ 'completor': function('asyncomplete#sources#file#completor')
+    \ }))
 " }}}
 " UltiSnip {{{
 let g:UltiSnipsJumpForwardTrigger='<c-l>'
 let g:UltiSnipsJumpBackwardTrigger='<c-h>'
 let g:UltiSnipsExpandTrigger='<c-j>'
+" }}}
+" Ale {{{
+let g:ale_sign_column_always=1
 " }}}
 " Elm {{{
 let g:elm_setup_keybindings = 0
